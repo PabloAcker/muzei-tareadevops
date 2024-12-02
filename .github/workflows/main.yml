@@ -17,7 +17,8 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v4
 
-      - uses: actions/setup-java@v4
+      - name: Setup Java
+        uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
@@ -29,7 +30,7 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Execute Gradle command - assembleDebug
-        run: ./gradlew assembleDebug
+        run: ./gradlew :main:assembleDebug
 
       - name: Upload Artifact to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1.7.0
@@ -37,5 +38,5 @@ jobs:
           appId: ${{ secrets.FIREBASE_APP_ID }}
           serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
           groups: testers
-          file: app/build/outputs/apk/debug/app-debug.apk
+          file: main/build/outputs/apk/debug/app-debug.apk
           releaseNotes: ${{ inputs.release_notes }}
